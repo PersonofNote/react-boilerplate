@@ -1,7 +1,16 @@
 import React, { useState, useRef } from "react";
 import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
+import FormControl from '@mui/material/FormControl';
+//import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
+import Button from '@mui/material/Button';
+import FormLabel from '@mui/material/FormLabel';
+import FormHelperText from '@mui/material/FormHelperText';
+import { InputLabel, Input } from '@mui/material';
+import { useNavigate } from "react-router-dom";
+
+// TEST
+import { Avatar, TextField, CssBaseline, Link, Grid, Box, Typography, Container } from "@material-ui/core";
 
 import AuthService from "../services/auth.service";
 
@@ -39,9 +48,14 @@ const Login = (props) => {
 
     setMessage("");
     setLoading(true);
-
-    form.current.validateAll();
-
+    // TODO: implement form validation with different library (current library uses deprecated api)
+    //form.current.validateAll();
+    AuthService.login(username, password).then((response) => { 
+     if(response.status === 200) {
+       return response.user
+     }
+    }).catch(err => {console.log("There was an error! " + err)})
+    /*
     if (checkBtn.current.context._errors.length === 0) {
       AuthService.login(username, password).then(
         () => {
@@ -63,63 +77,72 @@ const Login = (props) => {
     } else {
       setLoading(false);
     }
+    */
   };
-
-  return (
-    <div className="col-md-12">
-      <div className="card card-container">
-        <img
-          src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-          alt="profile-img"
-          className="profile-img-card"
-        />
-
-        <Form onSubmit={handleLogin} ref={form}>
-          <div className="form-group">
-            <label htmlFor="username">Username</label>
-            <Input
-              type="text"
-              className="form-control"
-              name="username"
-              value={username}
-              onChange={onChangeUsername}
-              validations={[required]}
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <Input
-              type="password"
-              className="form-control"
-              name="password"
-              value={password}
-              onChange={onChangePassword}
-              validations={[required]}
-            />
-          </div>
-
-          <div className="form-group">
-            <button className="btn btn-primary btn-block" disabled={loading}>
-              {loading && (
-                <span className="spinner-border spinner-border-sm"></span>
-              )}
-              <span>Login</span>
-            </button>
-          </div>
-
-          {message && (
-            <div className="form-group">
-              <div className="alert alert-danger" role="alert">
-                {message}
-              </div>
-            </div>
-          )}
-          <CheckButton style={{ display: "none" }} ref={checkBtn} />
-        </Form>
-      </div>
-    </div>
-  );
+  
+ return (
+  <Container component="main" maxWidth="xs">
+  <CssBaseline />
+  <Box
+    sx={{
+      marginTop: 8,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    }}
+  >
+    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+    </Avatar>
+    <Typography component="h1" variant="h5">
+      Sign in
+    </Typography>
+    <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
+      <TextField
+        margin="normal"
+        required
+        fullWidth
+        id="email"
+        label="Email Address"
+        name="email"
+        autoComplete="email"
+        autoFocus
+        onChange = {onChangeUsername}
+      />
+      <TextField
+        margin="normal"
+        required
+        fullWidth
+        name="password"
+        label="Password"
+        type="password"
+        id="password"
+        autoComplete="current-password"
+        onChange = {onChangePassword}
+      />
+      <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        sx={{ mt: 3, mb: 2 }}
+      >
+        Sign In
+      </Button>
+      <Grid container>
+        <Grid item xs>
+          <Link href="#" variant="body2">
+            Forgot password?
+          </Link>
+        </Grid>
+        <Grid item>
+          <Link href="#" variant="body2">
+            {"Don't have an account? Sign Up"}
+          </Link>
+        </Grid>
+      </Grid>
+    </Box>
+  </Box>
+</Container>  
+ );
 };
 
-export default Login;
+export default Login

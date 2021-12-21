@@ -20,6 +20,10 @@ import MenuItem from '@mui/material/MenuItem';
 import { Container } from '@material-ui/core';
 import "./App.css";
 
+const printUser = AuthService.getCurrentUser();
+console.log("USER IS")
+console.log(printUser);
+
 const App = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
@@ -30,8 +34,8 @@ const App = () => {
     console.log(user)
     if (user) {
       setCurrentUser(user);
-      setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
-      setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
+      //setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
+      //setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
     }
   }, []);
 
@@ -52,12 +56,12 @@ const App = () => {
         </MenuItem>
         <div className="navbar-nav mr-auto">
         <MenuItem>
-          <li className="nav-item">
-            <Link to={"/"} className="nav-link">
+          <Link to={"/"} className="nav-link">
               Home
-            </Link>
-          </li>
+          </Link>
         </MenuItem>
+        {!currentUser && (
+          <>
           <li className="nav-item">
             <Link to={"/login"} className="nav-link">
               Log In
@@ -68,6 +72,8 @@ const App = () => {
               Sign Up
             </Link>
           </li>
+          </>
+        )} 
           {showModeratorBoard && (
             <li className="nav-item">
               <Link to={"/mod"} className="nav-link">
@@ -85,21 +91,26 @@ const App = () => {
           )}
 
           {currentUser && (
-            <li className="nav-item">
-              <Link to={"/user"} className="nav-link">
-                User
-              </Link>
-            </li>
+            <>
+              <li className="nav-item">
+                <Link to={"/user"} className="nav-link">
+                  User
+                </Link>
+              </li>
+              <li> <button onClick={logOut}> Logout </button> </li>
+            </>
           )}
         </div>
       </MenuList>
     </nav>
       <Routes>
           <Route index element={<Home />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="users/:userId" element={<Profile />} />
       </Routes>
     </BrowserRouter>
+    <Footer />
   </Container>
   </>
    

@@ -48,7 +48,6 @@ const vpassword = (value) => {
 };
 
 const Register = (props) => {
-  console.log("REGISTER PAGE")
   const form = useRef();
   const checkBtn = useRef();
 
