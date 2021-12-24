@@ -19,8 +19,6 @@ const login = (username, password) => {
       password,
     })
     .then((response) => {
-      console.log("AXIO RES")
-      console.log(response)
       if (response.data.user.access_token) {
         localStorage.setItem("user", JSON.stringify(response.data.user));
       }

@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import FormLabel from '@mui/material/FormLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import { InputLabel, Input } from '@mui/material';
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 // TEST
 import { Avatar, TextField, CssBaseline, Link, Grid, Box, Typography, Container } from "@material-ui/core";
@@ -24,7 +24,8 @@ const required = (value) => {
   }
 };
 
-const Login = (props) => {
+const Login = ({setCurrentUser}) => {
+  console.log(setCurrentUser)
   const form = useRef();
   const checkBtn = useRef();
 
@@ -32,6 +33,7 @@ const Login = (props) => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+
 
   const onChangeUsername = (e) => {
     const username = e.target.value;
@@ -52,34 +54,18 @@ const Login = (props) => {
     //form.current.validateAll();
     AuthService.login(username, password).then((response) => { 
      if(response.status === 200) {
-       return response.user
-     }
-    }).catch(err => {console.log("There was an error! " + err)})
-    /*
-    if (checkBtn.current.context._errors.length === 0) {
-      AuthService.login(username, password).then(
-        () => {
-          props.history.push("/profile");
-          window.location.reload();
-        },
-        (error) => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-
-          setLoading(false);
-          setMessage(resMessage);
-        }
-      );
-    } else {
+      return response.user
+     }else {
       setLoading(false);
     }
-    */
+    }).catch(err => {console.log("There was an error! " + err)})
   };
-  
+
+  if (AuthService.getCurrentUser() != null) {
+    setCurrentUser(AuthService.getCurrentUser());
+    return  <Navigate to="/" replace={true} />;
+  }
+
  return (
   <Container component="main" maxWidth="xs">
   <CssBaseline />

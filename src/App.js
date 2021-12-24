@@ -1,9 +1,10 @@
 
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 
 import AuthService from "./services/auth.service";
 
+import { ProtectedRoute } from "./components/ProtectedRoute";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
@@ -20,9 +21,6 @@ import MenuItem from '@mui/material/MenuItem';
 import { Container } from '@material-ui/core';
 import "./App.css";
 
-const printUser = AuthService.getCurrentUser();
-console.log("USER IS")
-console.log(printUser);
 
 const App = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
@@ -31,6 +29,7 @@ const App = () => {
 
   useEffect(() => {
     const user = AuthService.getCurrentUser();
+    console.log("App page refreshed")
     console.log(user)
     if (user) {
       setCurrentUser(user);
@@ -41,12 +40,15 @@ const App = () => {
 
   const logOut = () => {
     AuthService.logout();
+    window.location.reload(false);
+    return  <Navigate to="/" replace={true} />;
   };
+
 
   return (
   <>
   <Container>
-    <BrowserRouter>
+    <BrowserRouter >
     <nav className="menu">
       <MenuList>
         <MenuItem>
@@ -93,8 +95,8 @@ const App = () => {
           {currentUser && (
             <>
               <li className="nav-item">
-                <Link to={"/user"} className="nav-link">
-                  User
+                <Link to={`/users/${currentUser.id}`} className="nav-link">
+                  Profile
                 </Link>
               </li>
               <li> <button onClick={logOut}> Logout </button> </li>
@@ -105,9 +107,17 @@ const App = () => {
     </nav>
       <Routes>
           <Route index element={<Home />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login setCurrentUser={setCurrentUser} />}  />
           <Route path="/register" element={<Register />} />
-          <Route path="users/:userId" element={<Profile />} />
+          <Route path="users/:userId" element={<ProtectedRoute><Profile /> </ProtectedRoute>} />
+          <Route
+            path="*"
+            element={
+              <main style={{ padding: "1rem" }}>
+                <p>There's nothing here!</p>
+              </main>
+            }
+          />
       </Routes>
     </BrowserRouter>
     <Footer />
