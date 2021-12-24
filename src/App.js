@@ -109,7 +109,7 @@ const App = () => {
           <Route index element={<Home />} />
           <Route path="/login" element={<Login setCurrentUser={setCurrentUser} />}  />
           <Route path="/register" element={<Register />} />
-          <Route path="users/:userId" element={<ProtectedRoute><Profile /> </ProtectedRoute>} />
+          <Route path="users/:userId" element={<ProtectedRoute><BoardUser userId={currentUser ? currentUser.id : ""} /> </ProtectedRoute>} />
           <Route
             path="*"
             element={

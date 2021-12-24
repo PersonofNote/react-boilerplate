@@ -25,7 +25,7 @@ const required = (value) => {
 };
 
 const Login = ({setCurrentUser}) => {
-  console.log(setCurrentUser)
+
   const form = useRef();
   const checkBtn = useRef();
 
@@ -62,6 +62,7 @@ const Login = ({setCurrentUser}) => {
   };
 
   if (AuthService.getCurrentUser() != null) {
+    // This throws a warning... but it works.
     setCurrentUser(AuthService.getCurrentUser());
     return  <Navigate to="/" replace={true} />;
   }
