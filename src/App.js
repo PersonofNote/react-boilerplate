@@ -8,6 +8,13 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
 import HomePage from "./components/HomePage";
 import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
@@ -22,15 +29,15 @@ import { Container } from '@material-ui/core';
 import "./App.css";
 
 
+
 const App = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
   const [currentUser, setCurrentUser] = useState(undefined);
 
+
   useEffect(() => {
     const user = AuthService.getCurrentUser();
-    console.log("App page refreshed")
-    console.log(user)
     if (user) {
       setCurrentUser(user);
       //setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
@@ -50,6 +57,7 @@ const App = () => {
   <Container>
     <BrowserRouter >
     <nav className="menu">
+    <AppBar position="static">
       <MenuList>
         <MenuItem>
           <Link to={"/"} className="navbar-brand">
@@ -58,19 +66,19 @@ const App = () => {
         </MenuItem>
         <div className="navbar-nav mr-auto">
         <MenuItem>
-          <Link to={"/"} className="nav-link">
+          <Link to={"/"} >
               Home
           </Link>
         </MenuItem>
         {!currentUser && (
           <>
           <li className="nav-item">
-            <Link to={"/login"} className="nav-link">
+            <Link to={"/login"} >
               Log In
             </Link>
           </li>
           <li className="nav-item">
-            <Link to={"/register"} className="nav-link">
+            <Link to={"/register"} >
               Sign Up
             </Link>
           </li>
@@ -78,7 +86,7 @@ const App = () => {
         )} 
           {showModeratorBoard && (
             <li className="nav-item">
-              <Link to={"/mod"} className="nav-link">
+              <Link to={"/mod"} >
                 Moderator Board
               </Link>
             </li>
@@ -86,7 +94,7 @@ const App = () => {
 
           {showAdminBoard && (
             <li className="nav-item">
-              <Link to={"/admin"} className="nav-link">
+              <Link to={"/admin"} >
                 Admin Board
               </Link>
             </li>
@@ -95,7 +103,7 @@ const App = () => {
           {currentUser && (
             <>
               <li className="nav-item">
-                <Link to={`/users/${currentUser.id}`} className="nav-link">
+                <Link to={`/users/${currentUser.id}`} replace={true} >
                   Profile
                 </Link>
               </li>
@@ -104,11 +112,15 @@ const App = () => {
           )}
         </div>
       </MenuList>
+      </AppBar>
     </nav>
       <Routes>
           <Route index element={<Home />} />
           <Route path="/login" element={<Login setCurrentUser={setCurrentUser} />}  />
           <Route path="/register" element={<Register />} />
+          {/* Set the userid to an empty string if not defined; this allows the page to load but should never actually be loaded,
+          since the route is protected and will redirect if !currentUser. 
+          Is there a better way to handle this? */}
           <Route path="users/:userId" element={<ProtectedRoute><BoardUser userId={currentUser ? currentUser.id : ""} /> </ProtectedRoute>} />
           <Route
             path="*"

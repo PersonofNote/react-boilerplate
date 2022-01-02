@@ -1,9 +1,11 @@
 import React from "react";
+import Toolbar from '@mui/material/Toolbar';
 
 
 const Footer = () => {
   return (
     <div className="footer">
+      <Toolbar>
       <footer>
         <div>
           <p>
@@ -11,6 +13,7 @@ const Footer = () => {
           </p>
         </div>
       </footer>
+      </Toolbar>
     </div>
   );
 }
