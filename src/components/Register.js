@@ -91,7 +91,6 @@ const Register = (props) => {
           setSuccessful(true);
           setMessage(response.data.message);
           const timer = setTimeout(() => {
-            console.log('This will run after 1 second!')
             setTimerFinished(true);
           }, 1000);
           return () => { 
@@ -191,7 +190,7 @@ const Register = (props) => {
             </div>
           )}
           {timerFinished && (
-            <Navigate to="/" replace={true} />
+            <Navigate to="/login" replace={true} />
           )}
           <CheckButton style={{ display: "none" }} ref={checkBtn} />
         </Form>

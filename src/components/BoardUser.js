@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import UserService from "../services/user.service";
 
 // Don't show attributes like password, token, etc.
-const userDisplayProperties = ["email", "username", "picture"]
+const userDisplayProperties = ["email", "username"]
 
 
 const BoardUser = () => {

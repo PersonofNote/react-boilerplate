@@ -1,7 +1,9 @@
 import axios from "axios";
 
 // TODO: set up env vars
-const API_URL = "http://localhost:5000/";
+const API_URL = process.env.NODE_ENV === "development" ?  "http://localhost:5000/" : ""
+
+console.log(API_URL)
 
 const register = (username, email, password) => {
   return axios.post(API_URL + "/auth/signup", {

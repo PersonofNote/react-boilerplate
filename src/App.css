@@ -60,3 +60,26 @@
   color: white;
 }
 
+footer {
+  display: flex;
+  flex-direction: row;
+}
+
+.footer-icons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0 24px;
+}
+
+.footer-icon {
+  height: 24px;
+  width: 24px;
+  padding: 0 4px;
+}
+
+.footer-icon svg:hover {
+  fill: ghostwhite;
+  transition-duration: 0.5s;
+}

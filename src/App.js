@@ -34,7 +34,6 @@ import { ReactComponent as ReactLogo} from './logo.svg';
 import "./App.css";
 
 
-
 const App = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
@@ -99,16 +98,12 @@ const App = () => {
               )}
 
               {currentUser && (
-                <>
-                <MenuItem>
-                    <Link to={`/users/${currentUser.id}`} replace={true} >
+                <div>
+                  <Link to={`/users/${currentUser.id}`} replace={true} >
                       Profile
                     </Link>
-                </MenuItem>
-                <MenuItem>
                   <Button variant="contained" onClick={logOut}> Logout </Button>
-                </MenuItem>
-                </>
+                </div>
               )}
           </MenuList>
         </Container>
