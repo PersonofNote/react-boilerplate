@@ -28,6 +28,7 @@ import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import { Container } from '@material-ui/core';
 import Toolbar from '@mui/material/Toolbar';
+import { ReactComponent as ReactLogo} from './logo.svg';
 
 
 import "./App.css";
@@ -61,86 +62,77 @@ const App = () => {
     <BrowserRouter >
       <AppBar className="menu" position="static">
         <Container>
-          <>
           <MenuList sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
             <MenuItem>
               <Link to={"/"} className="navbar-brand">
-                Logo
+                <ReactLogo className="App-logo"/>
               </Link>
             </MenuItem>
             {!currentUser && (
               <MenuItem>
-                <li className="nav-item">
-                  <Button>
-                    <Link to={"/login"} >
-                      Log In
-                    </Link>
-                  </Button>
-                </li>
-                <li className="nav-item">
-                  <Button>
-                    <Link to={"/register"} >
-                      Sign Up
-                    </Link>
-                  </Button>
-                </li>
+                <Button>
+                  <Link to={"/login"} >
+                    Log In
+                  </Link>
+                </Button>
+                <Button>
+                  <Link to={"/register"} >
+                    Sign Up
+                  </Link>
+                </Button>
               </MenuItem>
             )} 
               {showModeratorBoard && (
                 <MenuItem>
-                  <li className="nav-item">
                     <Link to={"/mod"} >
                       Moderator Board
                     </Link>
-                  </li>
                 </MenuItem>
               )}
 
               {showAdminBoard && (
                 <MenuItem>
-                  <li className="nav-item">
-                    <Link to={"/admin"} >
-                      Admin Board
-                    </Link>
-                  </li>
+                  <Link to={"/admin"} >
+                    Admin Board
+                  </Link>
                 </MenuItem>
               )}
 
               {currentUser && (
                 <>
                 <MenuItem>
-                  <li className="nav-item">
                     <Link to={`/users/${currentUser.id}`} replace={true} >
                       Profile
                     </Link>
-                  </li>
                 </MenuItem>
                 <MenuItem>
-                  <li> <Button variant="contained" onClick={logOut}> Logout </Button> </li>
+                  <Button variant="contained" onClick={logOut}> Logout </Button>
                 </MenuItem>
                 </>
               )}
           </MenuList>
-          </>
         </Container>
       </AppBar>
-      <Routes>
-          <Route index element={<Home />} />
-          <Route path="/login" element={<Login setCurrentUser={setCurrentUser} />}  />
-          <Route path="/register" element={<Register />} />
-          {/* Set the userid to an empty string if not defined; this allows the page to load but should never actually be loaded,
-          since the route is protected and will redirect if !currentUser. 
-          Is there a better way to handle this? */}
-          <Route path="users/:userId" element={<ProtectedRoute><BoardUser userId={currentUser ? currentUser.id : ""} /> </ProtectedRoute>} />
-          <Route
-            path="*"
-            element={
-              <main style={{ padding: "1rem" }}>
-                <p>There's nothing here!</p>
-              </main>
-            }
-          />
-      </Routes>
+      {/* Enforce max width for all components */}
+      <Container id="main">
+        <Routes>
+            <Route index element={<Home />} />
+            <Route path="/login" element={<Login setCurrentUser={setCurrentUser} />}  />
+            <Route path="/register" element={<Register />} />
+            {/* Set the userid to an empty string if not defined; this allows the page to load but should never actually be loaded,
+            since the route is protected and will redirect if !currentUser. 
+            Is there a better way to handle this? */}
+            <Route path="users/:userId" element={<ProtectedRoute><BoardUser userId={currentUser ? currentUser.id : ""} /> </ProtectedRoute>} />
+            <Route
+              path="*"
+              element={
+                <main style={{ padding: "1rem" }}>
+                  <p>There's nothing here!</p>
+                </main>
+              }
+            />
+        </Routes>
+      </Container>
     </BrowserRouter>
     <Footer />
   </>

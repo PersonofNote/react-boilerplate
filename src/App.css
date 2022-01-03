@@ -3,7 +3,7 @@
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 4rem;
   pointer-events: none;
 }
 
@@ -48,3 +48,15 @@
 .menu a:hover {
   color: ghostwhite;
 }
+
+.alert {
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.alert.alert-danger {
+  background-color: #f44336;
+  color: white;
+}
+

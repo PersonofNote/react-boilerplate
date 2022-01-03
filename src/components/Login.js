@@ -35,6 +35,7 @@ const Login = ({setCurrentUser}) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [successful, setSuccessful] = useState(false);
   const [message, setMessage] = useState("");
 
 
@@ -57,6 +58,7 @@ const Login = ({setCurrentUser}) => {
     //form.current.validateAll();
     AuthService.login(username, password).then((response) => { 
      if(response.status === 200) {
+      setSuccessful(true);
       return response.user
      }else {
       setLoading(false);
@@ -120,7 +122,16 @@ const Login = ({setCurrentUser}) => {
       >
         Sign In
       </Button>
-      <Box> {message} </Box>
+      {message && (
+            <div className="form-group">
+              <div
+                className={ successful ? "alert alert-success" : "alert alert-danger" }
+                role="alert"
+              >
+                {message}
+              </div>
+            </div>
+          )}
       {/* TODO: implement password retrieval
       <Grid container>
         <Grid item xs>

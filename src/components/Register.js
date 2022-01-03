@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import {  Navigate } from "react-router-dom";
 
 // VALIDATION - IN PROGRESS
 import Form from "react-validation/build/form";
@@ -60,6 +61,7 @@ const Register = (props) => {
   const [password, setPassword] = useState("");
   const [successful, setSuccessful] = useState(false);
   const [message, setMessage] = useState("");
+  const [timerFinished, setTimerFinished] = useState(false);
 
   const onChangeUsername = (e) => {
     const username = e.target.value;
@@ -80,15 +82,22 @@ const Register = (props) => {
     e.preventDefault();
 
     setMessage("");
-    setSuccessful(false);
 
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
       AuthService.register(username, email, password).then(
         (response) => {
-          setMessage(response.data.message);
           setSuccessful(true);
+          setMessage(response.data.message);
+          const timer = setTimeout(() => {
+            console.log('This will run after 1 second!')
+            setTimerFinished(true);
+          }, 1000);
+          return () => { 
+            clearTimeout(timer);
+          }
+
         },
         (error) => {
           const resMessage =
@@ -121,7 +130,7 @@ const Register = (props) => {
         <Typography component="h1" variant="h5">
           Sign Up
         </Typography>
-        <Form noValidate sx={{ mt: 1 }} ref={form} onSubmit={handleRegister} ref={form}>
+        <Form sx={{ mt: 1 }} ref={form} onSubmit={handleRegister} ref={form}>
           {!successful && (
             <div>
                 <TextField
@@ -134,7 +143,6 @@ const Register = (props) => {
                   name="username"
                   autoComplete="username"
                   autoFocus
-                  value={username}
                   onChange={onChangeUsername}
                   validations={[required, vusername]}
                 />
@@ -147,7 +155,6 @@ const Register = (props) => {
                   name="email"
                   autoComplete="email"
                   autoFocus
-                  value={email}
                   onChange={onChangeEmail}
                   validations={[required, validEmail]}
                 />
@@ -160,7 +167,6 @@ const Register = (props) => {
                   type="password"
                   id="password"
                   autoComplete="current-password"
-                  value={password}
                   onChange={onChangePassword}
                   validations={[required, vpassword]}
                 />
@@ -183,6 +189,9 @@ const Register = (props) => {
                 {message}
               </div>
             </div>
+          )}
+          {timerFinished && (
+            <Navigate to="/" replace={true} />
           )}
           <CheckButton style={{ display: "none" }} ref={checkBtn} />
         </Form>
