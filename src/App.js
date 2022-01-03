@@ -8,13 +8,7 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
+
 import HomePage from "./components/HomePage";
 import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
@@ -23,9 +17,19 @@ import BoardAdmin from "./components/BoardAdmin";
 import Footer from "./components/Footer";
 
 // Styles
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import { Container } from '@material-ui/core';
+import Toolbar from '@mui/material/Toolbar';
+
+
 import "./App.css";
 
 
@@ -54,66 +58,72 @@ const App = () => {
 
   return (
   <>
-  <Container>
     <BrowserRouter >
-    <nav className="menu">
-    <AppBar position="static">
-      <MenuList>
-        <MenuItem>
-          <Link to={"/"} className="navbar-brand">
-            Logo
-          </Link>
-        </MenuItem>
-        <div className="navbar-nav mr-auto">
-        <MenuItem>
-          <Link to={"/"} >
-              Home
-          </Link>
-        </MenuItem>
-        {!currentUser && (
+      <AppBar className="menu" position="static">
+        <Container>
           <>
-          <li className="nav-item">
-            <Link to={"/login"} >
-              Log In
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link to={"/register"} >
-              Sign Up
-            </Link>
-          </li>
+          <MenuList sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+            <MenuItem>
+              <Link to={"/"} className="navbar-brand">
+                Logo
+              </Link>
+            </MenuItem>
+            {!currentUser && (
+              <MenuItem>
+                <li className="nav-item">
+                  <Button>
+                    <Link to={"/login"} >
+                      Log In
+                    </Link>
+                  </Button>
+                </li>
+                <li className="nav-item">
+                  <Button>
+                    <Link to={"/register"} >
+                      Sign Up
+                    </Link>
+                  </Button>
+                </li>
+              </MenuItem>
+            )} 
+              {showModeratorBoard && (
+                <MenuItem>
+                  <li className="nav-item">
+                    <Link to={"/mod"} >
+                      Moderator Board
+                    </Link>
+                  </li>
+                </MenuItem>
+              )}
+
+              {showAdminBoard && (
+                <MenuItem>
+                  <li className="nav-item">
+                    <Link to={"/admin"} >
+                      Admin Board
+                    </Link>
+                  </li>
+                </MenuItem>
+              )}
+
+              {currentUser && (
+                <>
+                <MenuItem>
+                  <li className="nav-item">
+                    <Link to={`/users/${currentUser.id}`} replace={true} >
+                      Profile
+                    </Link>
+                  </li>
+                </MenuItem>
+                <MenuItem>
+                  <li> <Button variant="contained" onClick={logOut}> Logout </Button> </li>
+                </MenuItem>
+                </>
+              )}
+          </MenuList>
           </>
-        )} 
-          {showModeratorBoard && (
-            <li className="nav-item">
-              <Link to={"/mod"} >
-                Moderator Board
-              </Link>
-            </li>
-          )}
-
-          {showAdminBoard && (
-            <li className="nav-item">
-              <Link to={"/admin"} >
-                Admin Board
-              </Link>
-            </li>
-          )}
-
-          {currentUser && (
-            <>
-              <li className="nav-item">
-                <Link to={`/users/${currentUser.id}`} replace={true} >
-                  Profile
-                </Link>
-              </li>
-              <li> <button onClick={logOut}> Logout </button> </li>
-            </>
-          )}
-        </div>
-      </MenuList>
+        </Container>
       </AppBar>
-    </nav>
       <Routes>
           <Route index element={<Home />} />
           <Route path="/login" element={<Login setCurrentUser={setCurrentUser} />}  />
@@ -133,7 +143,6 @@ const App = () => {
       </Routes>
     </BrowserRouter>
     <Footer />
-  </Container>
   </>
    
   );

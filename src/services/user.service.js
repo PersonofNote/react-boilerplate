@@ -1,6 +1,7 @@
 import axios from "axios";
 import authHeader from "./auth-header";
 
+// TODO: set up environment variables
 const API_URL = "http://localhost:5000/";
 
 const getPublicContent = () => {
@@ -8,7 +9,6 @@ const getPublicContent = () => {
 };
 
 const getUserBoard = (userId) => {
-  console.log("In function, user id is: ")
   userId = userId.userId
   return axios.get(API_URL + "/users/" + userId, { headers: authHeader() });
 };

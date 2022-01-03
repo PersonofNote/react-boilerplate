@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+
+.menu a {
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  margin: 0 1rem;
+}
+
+.menu a:hover {
+  color: ghostwhite;
+}

@@ -1,15 +1,18 @@
 import React, { useState, useRef } from "react";
+
+// VALIDATION - IN PROGRESS
 import Form from "react-validation/build/form";
 import FormControl from '@mui/material/FormControl';
 //import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
+
+// STYLES
 import Button from '@mui/material/Button';
 import FormLabel from '@mui/material/FormLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import { InputLabel, Input } from '@mui/material';
 import { Navigate } from "react-router-dom";
 
-// TEST
 import { Avatar, TextField, CssBaseline, Link, Grid, Box, Typography, Container } from "@material-ui/core";
 
 import AuthService from "../services/auth.service";
@@ -58,7 +61,10 @@ const Login = ({setCurrentUser}) => {
      }else {
       setLoading(false);
     }
-    }).catch(err => {console.log("There was an error! " + err)})
+    }).catch(err => {
+      console.log("There was an error! " + err)
+      setLoading(false);
+      setMessage("Wrong username or password!");})
   };
 
   if (AuthService.getCurrentUser() != null) {
@@ -68,11 +74,11 @@ const Login = ({setCurrentUser}) => {
   }
 
  return (
-  <Container component="main" maxWidth="xs">
+  <Container justifyContent="center" id="main" component="main" maxWidth="xs" >
   <CssBaseline />
   <Box
     sx={{
-      marginTop: 8,
+      marginTop: `15%`,
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
@@ -114,6 +120,8 @@ const Login = ({setCurrentUser}) => {
       >
         Sign In
       </Button>
+      <Box> {message} </Box>
+      {/* TODO: implement password retrieval
       <Grid container>
         <Grid item xs>
           <Link href="#" variant="body2">
@@ -126,6 +134,7 @@ const Login = ({setCurrentUser}) => {
           </Link>
         </Grid>
       </Grid>
+      */}
     </Box>
   </Box>
 </Container>  

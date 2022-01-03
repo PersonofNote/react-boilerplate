@@ -1,9 +1,13 @@
 import React, { useState, useRef } from "react";
+
+// VALIDATION - IN PROGRESS
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
-import { Container } from '@mui/material';
+
+// STYLES
+import { Avatar, TextField, CssBaseline, Link, Grid, Box, Typography, Container, Button } from "@material-ui/core";
 
 import AuthService from "../services/auth.service";
 
@@ -102,56 +106,71 @@ const Register = (props) => {
   };
 
   return (
-    <div className="col-md-12">
-      <Container>
-        <img
-          src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-          alt="profile-img"
-          className="profile-img-card"
-        />
-
-        <Form onSubmit={handleRegister} ref={form}>
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: `15%`,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign Up
+        </Typography>
+        <Form noValidate sx={{ mt: 1 }} ref={form} onSubmit={handleRegister} ref={form}>
           {!successful && (
             <div>
-              <div className="form-group">
-                <label htmlFor="username">Username</label>
-                <Input
-                  type="text"
+                <TextField
                   className="form-control"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="username"
+                  label="Username"
                   name="username"
+                  autoComplete="username"
+                  autoFocus
                   value={username}
                   onChange={onChangeUsername}
                   validations={[required, vusername]}
                 />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <Input
-                  type="text"
-                  className="form-control"
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
                   name="email"
+                  autoComplete="email"
+                  autoFocus
                   value={email}
                   onChange={onChangeEmail}
                   validations={[required, validEmail]}
                 />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <Input
-                  type="password"
-                  className="form-control"
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
                   name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
                   value={password}
                   onChange={onChangePassword}
                   validations={[required, vpassword]}
                 />
-              </div>
-
-              <div className="form-group">
-                <button className="btn btn-primary btn-block">Sign Up</button>
-              </div>
+                <Button   
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}> 
+                  Sign Up 
+                </Button>
             </div>
           )}
 
@@ -167,8 +186,8 @@ const Register = (props) => {
           )}
           <CheckButton style={{ display: "none" }} ref={checkBtn} />
         </Form>
+      </Box>
       </Container>
-    </div>
   );
 };
 

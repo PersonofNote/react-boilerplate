@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useSearchParams } from "react-router-dom";
 
 import UserService from "../services/user.service";
 
+// Don't show attributes like password, token, etc.
+const userDisplayProperties = ["email", "username", "picture"]
 
 
-const BoardUser = ( ) => {
+const BoardUser = () => {
 
   const [content, setContent] = useState("");
 
@@ -16,11 +17,11 @@ const BoardUser = ( ) => {
   useEffect(() => {
       UserService.getUserBoard( { userId } ).then(
         (response) => {
-          console.log(response)
-          const data = response.data.result
-          if (data.length > 0) {
-          const userData = Object.keys(data[0]).map((item, i) => (
-            <li key={i}>
+          const data = response.data.result[0]
+          if (data) {
+            // Filter by userDisplayProperties
+          const userData = Object.keys(data).filter( (item) => userDisplayProperties.includes(item) ).map((item, i) => (
+            <li id={`user-attributes-${i}`} key={`user-attributes-${i}`}>
                 <span className="input-label">{ item } : { data[item] } </span>
             </li>
         ))
